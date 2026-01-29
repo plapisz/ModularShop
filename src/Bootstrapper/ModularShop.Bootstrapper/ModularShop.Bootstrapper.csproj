@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Modules\Catalog\ModularShop.Modules.Catalog.Api\ModularShop.Modules.Catalog.Api.csproj" />
+      <ProjectReference Include="..\..\Modules\Identity\ModularShop.Modules.Identity.Api\ModularShop.Modules.Identity.Api.csproj" />
+      <ProjectReference Include="..\..\Modules\Orders\ModularShop.Modules.Orders.Api\ModularShop.Modules.Orders.Api.csproj" />
+    </ItemGroup>
+
+</Project>
