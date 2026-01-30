@@ -1,6 +1,17 @@
 @url = http://localhost:5000
 
+###
 GET {{url}}
 Accept: application/json
 
 ###
+GET {{url}}/catalog
+Accept: application/json
+
+###
+GET {{url}}/identity
+Accept: application/json
+
+###
+GET {{url}}/orders
+Accept: application/json
