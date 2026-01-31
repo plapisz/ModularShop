@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ModularShop.Modules.Catalog.Api.Controllers;
 
 [ApiController]
-[Route(CatalogModule.BasePath)]
+[Route("api/catalog")]
 internal sealed class HomeController : ControllerBase
 {
     [HttpGet]

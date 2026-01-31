@@ -1,0 +1,43 @@
+@url = http://localhost:5000/api/catalog
+@productId = f786d5f4-99f0-46f6-ac39-a4f04117bbe5
+
+###
+GET {{url}}
+Accept: application/json
+
+###
+POST {{url}}/products
+Content-Type: application/json
+
+{
+  "name": "Mechanical Keyboard",
+  "description": "RGB mechanical keyboard with blue switches",
+  "price": 249.99,
+  "sku": "KEYB-001",
+  "stockQuantity": 50
+}
+
+###
+GET {{url}}/products
+Accept: application/json
+
+###
+GET {{url}}/products/{{productId}}
+Accept: application/json
+
+###
+PUT {{url}}/products/{{productId}}
+Content-Type: application/json
+
+{
+  "id": "{{productId}}",
+  "name": "Mechanical Keyboard PRO",
+  "description": "RGB mechanical keyboard with blue switches and aluminum case",
+  "price": 279.99,
+  "sku": "KEYB-001",
+  "stockQuantity": 45
+}
+
+###
+PUT {{url}}/products/{{productId}}/deactivate
+Content-Type: application/json
