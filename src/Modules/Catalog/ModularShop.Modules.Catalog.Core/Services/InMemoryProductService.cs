@@ -1,5 +1,6 @@
 using ModularShop.Modules.Catalog.Core.Dtos;
 using ModularShop.Modules.Catalog.Core.Entities;
+using ModularShop.Modules.Catalog.Core.Exceptions;
 using ModularShop.Modules.Catalog.Core.Repositories;
 
 namespace ModularShop.Modules.Catalog.Core.Services;
@@ -48,7 +49,7 @@ internal sealed class InMemoryProductService(IProductRepository repository) : IP
         var product = await repository.GetAsync(dto.Id);
         if (product is null)
         {
-            throw new InvalidOperationException($"Product with ID {dto.Id} not found.");
+            throw new ProductNotFoundException(dto.Id);
         }
 
         product.Name = dto.Name;
@@ -65,7 +66,7 @@ internal sealed class InMemoryProductService(IProductRepository repository) : IP
         var product = await repository.GetAsync(id);
         if (product is null)
         {
-            throw new InvalidOperationException($"Product with ID {id} not found.");
+            throw new ProductNotFoundException(id);
         }
 
         product.IsActive = false;

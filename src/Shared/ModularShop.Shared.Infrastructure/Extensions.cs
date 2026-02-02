@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using ModularShop.Shared.Infrastructure.Api;
+using ModularShop.Shared.Infrastructure.Exceptions;
 using ModularShop.Shared.Infrastructure.Modules;
 
 namespace ModularShop.Shared.Infrastructure;
@@ -14,10 +16,18 @@ public static class Extensions
             module.Register(services);
         }
 
-        services 
+        services
+            .AddErrorHandling()
             .AddControllers()
             .AddModules(modules);
 
         return services;
+    }
+    
+    public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
+    {
+        app.UseErrorHandling();
+
+        return app;
     }
 }
