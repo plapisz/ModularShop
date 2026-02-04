@@ -1,11 +1,12 @@
 using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using ModularShop.Shared.Abstractions.Modules;
 
 namespace ModularShop.Shared.Infrastructure.Modules;
 
 internal static class ModuleDiscovery
 {
-    public static IReadOnlyCollection<IModule> Discover() 
+    public static IReadOnlyCollection<IModule> Discover(IConfiguration configuration) 
         => GetAllAssemblies()
             .SelectMany(a => a.GetTypes())
             .Where(t =>
@@ -13,6 +14,7 @@ internal static class ModuleDiscovery
                 typeof(IModule).IsAssignableFrom(t))
             .Select(Activator.CreateInstance)
             .Cast<IModule>()
+            .Where(module => ModuleConfiguration.IsEnabled(configuration, module.Name))
             .ToList();
     
     private static List<Assembly> GetAllAssemblies()

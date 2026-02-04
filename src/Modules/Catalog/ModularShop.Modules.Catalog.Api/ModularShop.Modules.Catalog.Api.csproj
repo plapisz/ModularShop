@@ -14,4 +14,10 @@
       <ProjectReference Include="..\ModularShop.Modules.Catalog.Core\ModularShop.Modules.Catalog.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="module.catalog.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

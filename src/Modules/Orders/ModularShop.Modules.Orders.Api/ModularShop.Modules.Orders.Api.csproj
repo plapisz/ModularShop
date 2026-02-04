@@ -13,5 +13,11 @@
     <ItemGroup>
       <ProjectReference Include="..\ModularShop.Modules.Orders.Infrastructure\ModularShop.Modules.Orders.Infrastructure.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="module.orders.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 
 </Project>

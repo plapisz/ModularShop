@@ -8,6 +8,7 @@ internal static class Extensions
 {
     public static IMvcBuilder AddModules(this IMvcBuilder builder, IEnumerable<IModule> modules)
     {
+        builder.PartManager.ApplicationParts.Clear();
         foreach (var module in modules)
         {
             builder.PartManager.ApplicationParts.Add(

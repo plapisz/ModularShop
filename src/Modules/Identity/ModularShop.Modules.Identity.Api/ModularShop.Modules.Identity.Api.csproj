@@ -14,4 +14,10 @@
       <ProjectReference Include="..\ModularShop.Modules.Identity.Core\ModularShop.Modules.Identity.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="module.identity.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
