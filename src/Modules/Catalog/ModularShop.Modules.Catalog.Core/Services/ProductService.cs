@@ -5,7 +5,7 @@ using ModularShop.Modules.Catalog.Core.Repositories;
 
 namespace ModularShop.Modules.Catalog.Core.Services;
 
-internal sealed class InMemoryProductService(IProductRepository repository) : IProductService
+internal sealed class ProductService(IProductRepository repository) : IProductService
 {
     public async Task<Guid> CreateAsync(CreateProductDto dto)
     {

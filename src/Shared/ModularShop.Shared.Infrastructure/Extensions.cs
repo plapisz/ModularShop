@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ModularShop.Shared.Abstractions.Options;
 using ModularShop.Shared.Infrastructure.Api;
 using ModularShop.Shared.Infrastructure.Exceptions;
 using ModularShop.Shared.Infrastructure.Modules;
@@ -12,10 +13,12 @@ public static class Extensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<SqlServerOptions>(configuration.GetSection("sqlServer"));
+
         var modules = ModuleDiscovery.Discover(configuration);
         foreach (var module in modules)
         {
-            module.Register(services);
+            module.Register(services, configuration);
         }
 
         services

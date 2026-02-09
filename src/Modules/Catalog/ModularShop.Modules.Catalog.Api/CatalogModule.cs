@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ModularShop.Modules.Catalog.Core;
 using ModularShop.Modules.Catalog.Core.Options;
@@ -11,9 +12,9 @@ internal sealed class CatalogModule : IModule
     public string Name => "Catalog";
     public string Path => "catalog";
     
-    public void Register(IServiceCollection services)
+    public void Register(IServiceCollection services, IConfiguration configuration)
     {
         services.RegisterOptions<CatalogOptions>("catalog");
-        services.AddCore();
+        services.AddCore(configuration);
     }
 }

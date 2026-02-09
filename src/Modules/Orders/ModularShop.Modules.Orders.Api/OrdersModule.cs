@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ModularShop.Shared.Abstractions.Modules;
 
@@ -10,7 +11,7 @@ internal sealed class OrdersModule : IModule
     public string Name => "Orders";
     public string Path => BasePath;
 
-    public void Register(IServiceCollection services)
+    public void Register(IServiceCollection services, IConfiguration configuration)
     {
         
     }
