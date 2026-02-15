@@ -2,7 +2,7 @@
   "identity": {
     "module": {
       "name": "Identity",
-      "enabled": false
+      "enabled": true
     }
   }
 }

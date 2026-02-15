@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ModularShop.Modules.Identity.Api.Controllers;
 
 [ApiController]
-[Route(IdentityModule.BasePath)]
+[Route("api/identity")]
 internal sealed class HomeController : ControllerBase
 {
     [HttpGet]

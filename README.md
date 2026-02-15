@@ -3,11 +3,11 @@ Modular monolith e-commerce backend built with ASP.NET Core, combining CRUD and 
 
 ## Table of contents
 
-1. [Introduction](#introduction)
-2. [Modules](#modules)
-3. [Architectural Approach](#architectural-approach)
-4. [Technical Highlights](#technical-highlights)
-5. [Sources](#sources)
+1. [Introduction](#-introduction)
+2. [Modules](#-modules)
+3. [Architectural Approach](#-architectural-approach)
+4. [Technical Highlights](#-technical-highlights)
+5. [Sources](#-sources)
 
 ---
 

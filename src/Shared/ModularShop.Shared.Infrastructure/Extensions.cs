@@ -14,6 +14,7 @@ public static class Extensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<SqlServerOptions>(configuration.GetSection("sqlServer"));
+        services.Configure<AuthOptions>(configuration.GetSection("auth"));
 
         var modules = ModuleDiscovery.Discover(configuration);
         foreach (var module in modules)

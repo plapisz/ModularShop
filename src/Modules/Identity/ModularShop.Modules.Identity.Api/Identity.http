@@ -1,0 +1,30 @@
+@url = http://localhost:5000/api/identity
+@email = user1@modularshop.io 
+@password = secret
+
+###
+GET {{url}}
+Accept: application/json
+
+### 
+POST {{url}}/accounts/sign-up
+Content-Type: application/json
+
+{
+    "email": "{{email}}", 
+    "password": "{{password}}", 
+    "role": "Catalog Admin", 
+    "claims":  
+    {
+        "permissions": ["catalog.write", "catalog.read"]
+    }
+}
+
+### 
+POST {{url}}/accounts/sign-in
+Content-Type: application/json
+
+{
+    "email": "{{email}}", 
+    "password": "{{password}}"
+}
