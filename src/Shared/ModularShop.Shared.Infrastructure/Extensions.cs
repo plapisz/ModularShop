@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ModularShop.Shared.Abstractions.Options;
 using ModularShop.Shared.Infrastructure.Api;
+using ModularShop.Shared.Infrastructure.Auth;
 using ModularShop.Shared.Infrastructure.Exceptions;
 using ModularShop.Shared.Infrastructure.Modules;
 
@@ -27,12 +28,17 @@ public static class Extensions
             .AddControllers()
             .AddModules(modules);
 
+        services.AddAuth(configuration, modules);
+
         return services;
     }
     
     public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
     {
         app.UseErrorHandling();
+        app.UseAuthorization();
+        app.UseRouting();
+        app.UseAuthorization();
 
         return app;
     }

@@ -1,5 +1,6 @@
 @url = http://localhost:5000/api/catalog
 @productId = f786d5f4-99f0-46f6-ac39-a4f04117bbe5
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4OTNjZGY3MC05YmU0LTRlMjQtYTE1Zi1jZGZmNmU2NjM3NTkiLCJ1bmlxdWVfbmFtZSI6Ijg5M2NkZjcwLTliZTQtNGUyNC1hMTVmLWNkZmY2ZTY2Mzc1OSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImNhdGFsb2cgYWRtaW4iLCJwZXJtaXNzaW9ucyI6WyJjYXRhbG9nLndyaXRlIiwiY2F0YWxvZy5yZWFkIl0sIm5iZiI6MTc3MTI1MzA3MSwiZXhwIjoxNzcxMjU2NjcxLCJpc3MiOiJtb2R1bGFyc2hvcC1pc3N1ZXIiLCJhdWQiOiJtb2R1bGFyc2hvcC1hdWRpZW5jZSJ9.0p1cOe7DQUQeqmyAjC2m15p8o8F2ZI0O_eoTmwsaDtw
 
 ###
 GET {{url}}
@@ -7,6 +8,7 @@ Accept: application/json
 
 ###
 POST {{url}}/products
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
@@ -19,14 +21,17 @@ Content-Type: application/json
 
 ###
 GET {{url}}/products
+Authorization: Bearer {{accessToken}}
 Accept: application/json
 
 ###
 GET {{url}}/products/{{productId}}
+Authorization: Bearer {{accessToken}}
 Accept: application/json
 
 ###
 PUT {{url}}/products/{{productId}}
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
@@ -40,4 +45,5 @@ Content-Type: application/json
 
 ###
 PUT {{url}}/products/{{productId}}/deactivate
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json

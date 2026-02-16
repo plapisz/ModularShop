@@ -10,7 +10,8 @@ internal sealed class OrdersModule : IModule
     
     public string Name => "Orders";
     public string Path => BasePath;
-
+    public IReadOnlyCollection<string> Policies => [];
+    
     public void Register(IServiceCollection services, IConfiguration configuration)
     {
         

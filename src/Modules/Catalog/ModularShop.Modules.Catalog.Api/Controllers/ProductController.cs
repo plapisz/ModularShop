@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ModularShop.Modules.Catalog.Api.Security;
 using ModularShop.Modules.Catalog.Core.Dtos;
 using ModularShop.Modules.Catalog.Core.Services;
 
 namespace ModularShop.Modules.Catalog.Api.Controllers;
 
+[Authorize(Policy = Policies.Catalog.Read)]
 [ApiController]
 [Route("api/catalog/[controller]")]
 public class ProductsController(IProductService productService) : ControllerBase
@@ -25,6 +28,7 @@ public class ProductsController(IProductService productService) : ControllerBase
         => Ok(await productService.BrowseAsync());
 
     [HttpPost]
+    [Authorize(Policy = Policies.Catalog.Write)]
     public async Task<IActionResult> CreateAsync([FromBody] CreateProductDto dto)
     {
         var id = await productService.CreateAsync(dto);
@@ -33,6 +37,7 @@ public class ProductsController(IProductService productService) : ControllerBase
     }
     
     [HttpPut("{id:guid}")]
+    [Authorize(Policy = Policies.Catalog.Write)]
     public async Task<IActionResult> UpdateAsync(Guid id, UpdateProductDto dto)
     {
         await productService.UpdateAsync(dto with { Id = id });
@@ -41,6 +46,7 @@ public class ProductsController(IProductService productService) : ControllerBase
     }
 
     [HttpPut("{id:guid}/deactivate")]
+    [Authorize(Policy = Policies.Catalog.Write)]
     public async Task<IActionResult> DeactivateAsync(Guid id)
     {
         await productService.DeactivateAsync(id);

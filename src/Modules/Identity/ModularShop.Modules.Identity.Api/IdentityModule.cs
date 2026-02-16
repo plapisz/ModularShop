@@ -9,6 +9,7 @@ internal sealed class IdentityModule : IModule
 {
     public string Name => "Identity";
     public string Path => "identity";
+    public IReadOnlyCollection<string> Policies => [];
 
     public void Register(IServiceCollection services, IConfiguration configuration)
     {

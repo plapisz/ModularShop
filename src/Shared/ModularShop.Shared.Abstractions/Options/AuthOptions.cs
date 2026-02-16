@@ -2,8 +2,8 @@ namespace ModularShop.Shared.Abstractions.Options;
 
 public sealed class AuthOptions
 {
-    public required string Issuer { get; set; }
-    public required string Audience { get; set; }
-    public required string SigningKey { get; set; }
-    public required TimeSpan Expiry { get; set; }
+    public string Issuer { get; set; } = string.Empty;
+    public string Audience { get; set; } = string.Empty;
+    public string SigningKey { get; set; } = string.Empty;
+    public TimeSpan Expiry { get; set; } = TimeSpan.Zero;
 }

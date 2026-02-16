@@ -11,6 +11,7 @@ internal sealed class CatalogModule : IModule
 {
     public string Name => "Catalog";
     public string Path => "catalog";
+    public IReadOnlyCollection<string> Policies => [Security.Policies.Catalog.Read, Security.Policies.Catalog.Write];
     
     public void Register(IServiceCollection services, IConfiguration configuration)
     {
