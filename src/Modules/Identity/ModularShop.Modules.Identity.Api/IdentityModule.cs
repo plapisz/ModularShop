@@ -13,6 +13,6 @@ internal sealed class IdentityModule : IModule
 
     public void Register(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddCore();
+        services.AddCore(configuration);
     }
 }
