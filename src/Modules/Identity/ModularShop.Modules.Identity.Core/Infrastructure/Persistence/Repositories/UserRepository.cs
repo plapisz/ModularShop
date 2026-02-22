@@ -6,6 +6,9 @@ namespace ModularShop.Modules.Identity.Core.Infrastructure.Persistence.Repositor
 
 internal sealed class UserRepository(IdentityDbContext context) : IUserRepository
 {
+    public async Task<User?> GetByIdAsync(Guid id)
+        => await context.Users.SingleOrDefaultAsync(x => x.Id == id);
+    
     public async Task<User?> GetByEmailAsync(string email)
         => await context.Users.SingleOrDefaultAsync(x => x.Email == email);
 

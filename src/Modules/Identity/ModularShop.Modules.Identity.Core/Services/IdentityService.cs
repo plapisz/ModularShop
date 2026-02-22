@@ -11,6 +11,23 @@ internal sealed class IdentityService(IUserRepository userRepository,
     IAuthenticator authenticator)
     : IIdentityService
 {
+    public async Task<AccountDto?> GetAsync(Guid id)
+    {
+        var user = await userRepository.GetByIdAsync(id);
+        if (user is null)
+        {
+            return null;
+        }
+
+        return new AccountDto
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Role = user.Role,
+            Claims = user.Claims,
+        };
+    }
+
     public async Task SignUpAsync(SignUpDto dto)
     {
         var email = dto.Email.ToLowerInvariant();

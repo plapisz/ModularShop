@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ModularShop.Shared.Abstractions.Options;
 using ModularShop.Shared.Infrastructure.Api;
 using ModularShop.Shared.Infrastructure.Auth;
+using ModularShop.Shared.Infrastructure.Contexts;
 using ModularShop.Shared.Infrastructure.Exceptions;
 using ModularShop.Shared.Infrastructure.Modules;
 
@@ -29,6 +31,10 @@ public static class Extensions
             .AddModules(modules);
 
         services.AddAuth(configuration, modules);
+        
+        services.AddSingleton<IContextFactory, ContextFactory>();
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddTransient(sp => sp.GetRequiredService<IContextFactory>().Create());
 
         return services;
     }

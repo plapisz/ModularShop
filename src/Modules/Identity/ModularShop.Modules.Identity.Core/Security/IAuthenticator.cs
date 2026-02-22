@@ -4,5 +4,5 @@ namespace ModularShop.Modules.Identity.Core.Security;
 
 public interface IAuthenticator
 {
-    JsonWebTokenDto CreateToken(Guid userId, string role, IDictionary<string, IEnumerable<string>> claims);
+    JsonWebTokenDto CreateToken(Guid userId, string role, IReadOnlyDictionary<string, IReadOnlyCollection<string>> claims);
 }

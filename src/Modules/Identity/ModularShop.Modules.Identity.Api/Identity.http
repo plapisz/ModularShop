@@ -1,9 +1,15 @@
 @url = http://localhost:5000/api/identity
-@email = user1@modularshop.io 
+@email = user1@modularshop.io
 @password = secret
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4NWE1ZTgzZS02OGMzLTRmZTgtYTZhMC01N2I3MDQ2OGM2OWYiLCJ1bmlxdWVfbmFtZSI6Ijg1YTVlODNlLTY4YzMtNGZlOC1hNmEwLTU3YjcwNDY4YzY5ZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImNhdGFsb2cgYWRtaW4iLCJwZXJtaXNzaW9ucyI6WyJjYXRhbG9nLndyaXRlIiwiY2F0YWxvZy5yZWFkIl0sIm5iZiI6MTc3MTc0MzAyMCwiZXhwIjoxNzcxNzQ2NjIwLCJpc3MiOiJtb2R1bGFyc2hvcC1pc3N1ZXIiLCJhdWQiOiJtb2R1bGFyc2hvcC1hdWRpZW5jZSJ9.xXukXbcicZEG1Dw-L4lTvLB2lT4NdCieNBa7mX1csFw
 
 ###
 GET {{url}}
+Accept: application/json
+
+###
+GET {{url}}/accounts/me
+Authorization: Bearer {{accessToken}}
 Accept: application/json
 
 ### 

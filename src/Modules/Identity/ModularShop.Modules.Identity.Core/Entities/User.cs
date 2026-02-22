@@ -7,5 +7,5 @@ public class User
     public required string Password { get; set; }
     public required string Role { get; set; }
     public required bool IsActive { get; set; }
-    public required Dictionary<string, IEnumerable<string>> Claims { get; set; }   
+    public required IReadOnlyDictionary<string, IReadOnlyCollection<string>> Claims { get; set; }   
 }

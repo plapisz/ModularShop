@@ -16,7 +16,7 @@ internal sealed class Authenticator(IOptions<AuthOptions> options, IClock clock)
             Encoding.UTF8.GetBytes(options.Value.SigningKey)), 
         SecurityAlgorithms.HmacSha256);
 
-    public JsonWebTokenDto CreateToken(Guid userId, string role, IDictionary<string, IEnumerable<string>> claims)
+    public JsonWebTokenDto CreateToken(Guid userId, string role, IReadOnlyDictionary<string, IReadOnlyCollection<string>> claims)
     {
         var now = clock.Current();
         var jwtClaims = new List<Claim>
