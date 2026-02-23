@@ -14,8 +14,21 @@ namespace ModularShop.Shared.Infrastructure;
 
 public static class Extensions
 {
+    private const string CorsPolicy = "cors";
+    
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddCors(cors =>
+        {
+            cors.AddPolicy(CorsPolicy, policyBuilder =>
+            {
+                policyBuilder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
+        
         services.Configure<SqlServerOptions>(configuration.GetSection("sqlServer"));
         services.Configure<AuthOptions>(configuration.GetSection("auth"));
 
@@ -42,8 +55,12 @@ public static class Extensions
     public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
     {
         app.UseErrorHandling();
-        app.UseAuthorization();
+        
         app.UseRouting();
+        
+        app.UseCors(CorsPolicy);
+        
+        app.UseAuthentication();
         app.UseAuthorization();
 
         return app;
