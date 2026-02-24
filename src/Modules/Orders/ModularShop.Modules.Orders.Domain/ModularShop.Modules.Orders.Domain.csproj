@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\ModularShop.Shared.Abstractions\ModularShop.Shared.Abstractions.csproj" />
+    </ItemGroup>
+
 </Project>
