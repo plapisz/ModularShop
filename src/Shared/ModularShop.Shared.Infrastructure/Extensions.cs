@@ -1,12 +1,15 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ModularShop.Shared.Abstractions.Modules;
 using ModularShop.Shared.Abstractions.Options;
 using ModularShop.Shared.Infrastructure.Api;
 using ModularShop.Shared.Infrastructure.Auth;
 using ModularShop.Shared.Infrastructure.Contexts;
+using ModularShop.Shared.Infrastructure.Events;
 using ModularShop.Shared.Infrastructure.Exceptions;
 using ModularShop.Shared.Infrastructure.Modules;
 
@@ -37,6 +40,9 @@ public static class Extensions
         {
             module.Register(services, configuration);
         }
+        
+        var modulesAssemblies = GetModulesAssemblies(modules);
+        services.AddModuleRequests(modulesAssemblies);
 
         services
             .AddErrorHandling()
@@ -85,4 +91,26 @@ public static class Extensions
             ctx.HostingEnvironment.ContentRootPath,
             pattern,
             SearchOption.AllDirectories);
+
+    private static List<Assembly> GetModulesAssemblies(IReadOnlyCollection<IModule> modules)
+    {
+        var assemblies = new List<Assembly>();
+        foreach (var module in modules)
+        {
+            assemblies.AddRange(GetModuleAssemblies(module));
+        }
+        
+        return assemblies;
+    }
+    
+    private static List<Assembly> GetModuleAssemblies(IModule module)
+    {
+        var assemblyName = module.GetType().Assembly.GetName().Name!;
+        var modulePrefix = assemblyName[..assemblyName.LastIndexOf('.')];
+
+        return AppDomain.CurrentDomain
+            .GetAssemblies()
+            .Where(a => a.GetName().Name?.StartsWith(modulePrefix, StringComparison.OrdinalIgnoreCase) == true)
+            .ToList();
+    }
 }
