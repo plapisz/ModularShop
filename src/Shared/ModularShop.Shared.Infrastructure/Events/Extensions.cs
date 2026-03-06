@@ -8,6 +8,16 @@ internal static class Extensions
 {
     extension(IServiceCollection services)
     {
+        internal IServiceCollection AddEventHandlers(IReadOnlyCollection<Assembly> assemblies)
+        {
+            services.Scan(s => s.FromAssemblies(assemblies) 
+                .AddClasses(c => c.AssignableTo(typeof(IEventHandler<>))) 
+                .AsImplementedInterfaces() 
+                .WithScopedLifetime());
+            
+            return services;
+        }
+
         internal IServiceCollection AddModuleRequests(IReadOnlyCollection<Assembly> assemblies)
         {
             services.AddModuleRegistry(assemblies);
@@ -32,7 +42,7 @@ internal static class Extensions
                         .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEventHandler<>))
                         .Select(i => new
                         {
-                            HandlerType = t,
+                            HandlerInterface = i,
                             EventType = i.GetGenericArguments()[0]
                         }));
 
@@ -41,8 +51,8 @@ internal static class Extensions
                     registry.AddBroadcastAction(handler.EventType, async @event =>
                     {
                         using var scope = sp.CreateScope();
-                        var instance = scope.ServiceProvider.GetRequiredService(handler.HandlerType);
-                        await (Task)handler.HandlerType
+                        var instance = scope.ServiceProvider.GetRequiredService(handler.HandlerInterface);
+                        await (Task)handler.HandlerInterface
                             .GetMethod(nameof(IEventHandler<>.HandleAsync))!
                             .Invoke(instance, [@event])!;
                     });

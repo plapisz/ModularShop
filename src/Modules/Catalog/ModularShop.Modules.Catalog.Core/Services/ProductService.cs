@@ -1,11 +1,13 @@
 using ModularShop.Modules.Catalog.Core.Dtos;
 using ModularShop.Modules.Catalog.Core.Entities;
+using ModularShop.Modules.Catalog.Core.Events;
 using ModularShop.Modules.Catalog.Core.Exceptions;
 using ModularShop.Modules.Catalog.Core.Repositories;
+using ModularShop.Shared.Abstractions.Events;
 
 namespace ModularShop.Modules.Catalog.Core.Services;
 
-internal sealed class ProductService(IProductRepository repository) : IProductService
+internal sealed class ProductService(IProductRepository repository, IEventPublisher eventPublisher) : IProductService
 {
     public async Task<Guid> CreateAsync(CreateProductDto dto)
     {
@@ -21,6 +23,7 @@ internal sealed class ProductService(IProductRepository repository) : IProductSe
         };
 
         await repository.AddAsync(product);
+        await eventPublisher.PublishAsync(new ProductCreatedEvent(product.Id, product.Name, product.Price));
         
         return product.Id;
     }
@@ -59,6 +62,7 @@ internal sealed class ProductService(IProductRepository repository) : IProductSe
         product.StockQuantity = dto.StockQuantity;
 
         await repository.UpdateAsync(product);
+        await eventPublisher.PublishAsync(new ProductUpdatedEvent(product.Id, product.Name, product.Price));
     }
 
     public async Task DeactivateAsync(Guid id)
@@ -72,6 +76,7 @@ internal sealed class ProductService(IProductRepository repository) : IProductSe
         product.IsActive = false;
 
         await repository.UpdateAsync(product);
+        await eventPublisher.PublishAsync(new ProductDeactivatedEvent(product.Id));
     }
     
     private static ProductDto MapToDto(Product product)

@@ -42,6 +42,7 @@ public static class Extensions
         }
         
         var modulesAssemblies = GetModulesAssemblies(modules);
+        services.AddEventHandlers(modulesAssemblies);
         services.AddModuleRequests(modulesAssemblies);
 
         services
