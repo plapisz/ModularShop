@@ -10,6 +10,7 @@ using ModularShop.Shared.Infrastructure.Api;
 using ModularShop.Shared.Infrastructure.Auth;
 using ModularShop.Shared.Infrastructure.Contexts;
 using ModularShop.Shared.Infrastructure.Events;
+using ModularShop.Shared.Infrastructure.Events.Dispatchers;
 using ModularShop.Shared.Infrastructure.Exceptions;
 using ModularShop.Shared.Infrastructure.Modules;
 
@@ -44,6 +45,7 @@ public static class Extensions
         var modulesAssemblies = GetModulesAssemblies(modules);
         services.AddEventHandlers(modulesAssemblies);
         services.AddModuleRequests(modulesAssemblies);
+        services.AddAsyncEventDispatcher();
 
         services
             .AddErrorHandling()

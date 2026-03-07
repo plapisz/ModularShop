@@ -1,9 +1,10 @@
 using ModularShop.Shared.Abstractions.Events;
+using ModularShop.Shared.Infrastructure.Events.Dispatchers;
 
 namespace ModularShop.Shared.Infrastructure.Events;
 
-internal sealed class EventPublisher(IModuleClient moduleClient) : IEventPublisher
+internal sealed class EventPublisher(IAsyncEventDispatcher asyncEventDispatcher) : IEventPublisher
 {
     public async Task PublishAsync<TEvent>(TEvent @event) where TEvent : class, IEvent
-        => await moduleClient.PublishAsync(@event);
+        => await asyncEventDispatcher.PublishAsync(@event);
 }
