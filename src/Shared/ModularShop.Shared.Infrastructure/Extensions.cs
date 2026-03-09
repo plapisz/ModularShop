@@ -8,11 +8,13 @@ using ModularShop.Shared.Abstractions.Modules;
 using ModularShop.Shared.Abstractions.Options;
 using ModularShop.Shared.Infrastructure.Api;
 using ModularShop.Shared.Infrastructure.Auth;
+using ModularShop.Shared.Infrastructure.Commands;
 using ModularShop.Shared.Infrastructure.Contexts;
 using ModularShop.Shared.Infrastructure.Events;
 using ModularShop.Shared.Infrastructure.Events.Dispatchers;
 using ModularShop.Shared.Infrastructure.Exceptions;
 using ModularShop.Shared.Infrastructure.Modules;
+using ModularShop.Shared.Infrastructure.Queries;
 
 namespace ModularShop.Shared.Infrastructure;
 
@@ -46,6 +48,8 @@ public static class Extensions
         services.AddEventHandlers(modulesAssemblies);
         services.AddModuleRequests(modulesAssemblies);
         services.AddAsyncEventDispatcher();
+        services.AddCommands(modulesAssemblies);
+        services.AddQueries(modulesAssemblies);
 
         services
             .AddErrorHandling()
