@@ -10,6 +10,8 @@ public sealed class ProductSnapshot
     public Money UnitPrice { get; private set; }
     public bool IsActive { get; private set; }
 
+    private ProductSnapshot() { }
+
     public ProductSnapshot(Guid id, string name, Money unitPrice)
     {
         if (string.IsNullOrWhiteSpace(name))

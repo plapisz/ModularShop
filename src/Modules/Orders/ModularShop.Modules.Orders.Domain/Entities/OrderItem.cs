@@ -12,6 +12,8 @@ public sealed class OrderItem
 
     public Money TotalPrice => UnitPrice.Multiply(Quantity);
 
+    private OrderItem() { }
+
     public OrderItem(Guid productId, string productName, Money unitPrice, int quantity)
     {
         if (quantity <= 0)
@@ -24,7 +26,7 @@ public sealed class OrderItem
         UnitPrice = unitPrice;
         Quantity = quantity;
     }
-
+    
     public void ChangeQuantity(int quantity)
     {
         if (quantity <= 0)

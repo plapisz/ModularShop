@@ -17,6 +17,8 @@ public sealed class Order
     public Money TotalPrice => Money.Sum(_items.Select(i => i.TotalPrice).ToList());
     public IReadOnlyCollection<OrderItem> Items => _items;
 
+    private Order() { }
+
     private Order(Guid id, Guid customerId)
     {
         Id = id;
