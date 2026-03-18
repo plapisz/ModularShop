@@ -6,5 +6,5 @@ public interface IOrderReadRepository
 {
     Task<OrderDto?> GetByIdAsync(Guid id);
     Task<IReadOnlyList<OrderDto>> BrowseAsync();
-    Task<IReadOnlyList<OrderDto>> BrowseByClientIdAsync(Guid clientId);
+    Task<IReadOnlyList<OrderDto>> BrowseByCustomerIdAsync(Guid customerId);
 }

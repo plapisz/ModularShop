@@ -53,7 +53,7 @@ internal sealed class OrderReadRepository(IDbConnectionFactory connectionFactory
         return (await connection.QueryAsync<OrderDto>(sql)).ToList();
     }
 
-    public async Task<IReadOnlyList<OrderDto>> BrowseByClientIdAsync(Guid clientId)
+    public async Task<IReadOnlyList<OrderDto>> BrowseByCustomerIdAsync(Guid customerId)
     {
         const string sql = """
                            SELECT
@@ -62,11 +62,10 @@ internal sealed class OrderReadRepository(IDbConnectionFactory connectionFactory
                                CustomerId,
                                Status
                            FROM orders.Orders
-                           WHERE CustomerId = @ClientId
+                           WHERE CustomerId = @CustomerId
                            """;
 
-        
         using var connection = await connectionFactory.OpenConnectionAsync();
-        return (await connection.QueryAsync<OrderDto>(sql, new { ClientId = clientId })).ToList();
+        return (await connection.QueryAsync<OrderDto>(sql, new { CustomerId = customerId })).ToList();
     }
 }

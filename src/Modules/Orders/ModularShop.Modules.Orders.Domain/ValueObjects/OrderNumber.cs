@@ -17,7 +17,7 @@ public sealed record OrderNumber
     }
 
     public static OrderNumber New()
-        => new($"ORD-{Guid.NewGuid():N[..6].ToUpperInvariant()}");
+        => new($"ORD-{Guid.NewGuid().ToString("N").ToUpperInvariant()}");
 
     public static OrderNumber From(string value)
         => new(value);

@@ -7,14 +7,12 @@ namespace ModularShop.Modules.Orders.Api;
 
 internal sealed class OrdersModule : IModule
 {
-    internal const string BasePath = "orders";
-    
     public string Name => "Orders";
-    public string Path => BasePath;
-    public IReadOnlyCollection<string> Policies => [];
+    public string Path => "orders";
+    public IReadOnlyCollection<string> Policies => [ Security.Policies.Order.Read, Security.Policies.Order.Write ];
     
     public void Register(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddInfrastructure();
+        services.AddInfrastructure(configuration);
     }
 }

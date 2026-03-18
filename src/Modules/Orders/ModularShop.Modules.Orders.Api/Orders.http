@@ -1,0 +1,55 @@
+@url = http://localhost:5000/api/orders
+@orderId = d3540a90-983a-43a5-be11-67e991af4989
+@customerId = 3f9c2a8e-7b6d-4c1a-9f52-8e1d6b4a7c93
+@productId = 219033cb-fed9-4a92-b6ed-455979e76d6d
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ODExOTcyNC0xOTllLTQ4ODktYjUxYS1hZjcwN2JiNTk4MzYiLCJ1bmlxdWVfbmFtZSI6Ijk4MTE5NzI0LTE5OWUtNDg4OS1iNTFhLWFmNzA3YmI1OTgzNiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImNhdGFsb2cgYWRtaW4iLCJwZXJtaXNzaW9ucyI6WyJjYXRhbG9nLndyaXRlIiwiY2F0YWxvZy5yZWFkIiwib3JkZXJzLndyaXRlIiwib3JkZXJzLnJlYWQiXSwibmJmIjoxNzczODQ2OTUwLCJleHAiOjE3NzM4NTA1NTAsImlzcyI6Im1vZHVsYXJzaG9wLWlzc3VlciIsImF1ZCI6Im1vZHVsYXJzaG9wLWF1ZGllbmNlIn0.ho1I6ZqJuIeakvOLSO3VfNHeeBui1gkmoifMtydNm9g
+
+###
+GET {{url}}/home
+Accept: application/json
+
+###
+GET {{url}}
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+GET {{url}}/{{orderId}}
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+GET {{url}}/customer/{{customerId}}
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+POST {{url}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "customerId": "{{customerId}}"
+}
+
+###
+POST {{url}}/{{orderId}}/items
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "productId": "{{productId}}",
+  "quantity": 2
+}
+
+###
+DELETE {{url}}/{{orderId}}/items/{{productId}}
+Authorization: Bearer {{accessToken}}
+
+###
+POST {{url}}/{{orderId}}/confirm
+Authorization: Bearer {{accessToken}}
+
+###
+POST {{url}}/{{orderId}}/cancel
+Authorization: Bearer {{accessToken}}
