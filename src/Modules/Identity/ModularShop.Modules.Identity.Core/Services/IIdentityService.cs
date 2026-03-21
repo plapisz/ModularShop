@@ -4,7 +4,7 @@ namespace ModularShop.Modules.Identity.Core.Services;
 
 public interface IIdentityService
 {
-    Task<AccountDto?> GetAsync(Guid id);
-    Task SignUpAsync(SignUpDto dto);
-    Task<JsonWebTokenDto> SignInAsync(SignInDto dto);
+    Task<AccountDto?> GetAsync(Guid id, CancellationToken cancellationToken);
+    Task SignUpAsync(SignUpDto dto, CancellationToken cancellationToken);
+    Task<JsonWebTokenDto> SignInAsync(SignInDto dto, CancellationToken cancellationToken);
 }

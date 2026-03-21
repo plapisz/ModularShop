@@ -6,20 +6,20 @@ namespace ModularShop.Modules.Orders.Infrastructure.Persistence.Write.Repositori
 
 internal sealed class OrderRepository(OrdersDbContext context) : IOrderRepository
 {
-    public async Task<Order?> GetAsync(Guid id) 
+    public async Task<Order?> GetAsync(Guid id, CancellationToken cancellationToken)
         => await context.Orders 
             .Include(x => x.Items)
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-    public async Task AddAsync(Order order)
+    public async Task AddAsync(Order order, CancellationToken cancellationToken)
     {
-        await context.Orders.AddAsync(order);
-        await context.SaveChangesAsync();
+        await context.Orders.AddAsync(order, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateAsync(Order order)
+    public async Task UpdateAsync(Order order, CancellationToken cancellationToken)
     {
         context.Orders.Update(order);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

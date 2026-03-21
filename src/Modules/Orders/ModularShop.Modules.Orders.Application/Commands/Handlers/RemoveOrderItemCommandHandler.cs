@@ -7,9 +7,9 @@ namespace ModularShop.Modules.Orders.Application.Commands.Handlers;
 public sealed class RemoveOrderItemCommandHandler(IOrderRepository orderRepository)
     : ICommandHandler<RemoveOrderItemCommand>
 {
-    public async Task HandleAsync(RemoveOrderItemCommand command)
+    public async Task HandleAsync(RemoveOrderItemCommand command, CancellationToken cancellationToken)
     {
-        var order = await orderRepository.GetAsync(command.OrderId);
+        var order = await orderRepository.GetAsync(command.OrderId, cancellationToken);
         if (order is null)
         {
             throw new OrderNotFoundException(command.OrderId);
@@ -17,6 +17,6 @@ public sealed class RemoveOrderItemCommandHandler(IOrderRepository orderReposito
 
         order.RemoveItem(command.ProductId);
 
-        await orderRepository.UpdateAsync(order);
+        await orderRepository.UpdateAsync(order, cancellationToken);
     }
 }

@@ -6,18 +6,18 @@ namespace ModularShop.Modules.Orders.Infrastructure.Persistence.Write.Repositori
 
 internal sealed class ProductSnapshotRepository(OrdersDbContext context) : IProductSnapshotRepository
 {
-    public Task<ProductSnapshot?> GetAsync(Guid id)
-        => context.ProductSnapshots.FirstOrDefaultAsync(x => x.Id == id);
+    public Task<ProductSnapshot?> GetAsync(Guid id, CancellationToken cancellationToken)
+        => context.ProductSnapshots.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-    public async Task AddAsync(ProductSnapshot snapshot)
+    public async Task AddAsync(ProductSnapshot snapshot, CancellationToken cancellationToken)
     {
-        await context.ProductSnapshots.AddAsync(snapshot);
-        await context.SaveChangesAsync();
+        await context.ProductSnapshots.AddAsync(snapshot, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateAsync(ProductSnapshot snapshot)
+    public async Task UpdateAsync(ProductSnapshot snapshot, CancellationToken cancellationToken)
     {
         context.ProductSnapshots.Update(snapshot);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

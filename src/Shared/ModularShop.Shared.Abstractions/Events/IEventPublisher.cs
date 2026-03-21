@@ -2,5 +2,5 @@ namespace ModularShop.Shared.Abstractions.Events;
 
 public interface IEventPublisher
 {
-    Task PublishAsync<TEvent>(TEvent @event) where TEvent : class, IEvent;
+    Task PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken) where TEvent : class, IEvent;
 }

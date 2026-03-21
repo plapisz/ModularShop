@@ -17,7 +17,7 @@ internal sealed class BackgroundDispatcher(
         {
             try
             {
-                await moduleClient.PublishAsync(@event);
+                await moduleClient.PublishAsync(@event, stoppingToken);
             }
             catch (Exception exception)
             {

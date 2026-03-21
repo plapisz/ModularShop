@@ -6,15 +6,15 @@ namespace ModularShop.Modules.Identity.Core.Infrastructure.Persistence.Repositor
 
 internal sealed class UserRepository(IdentityDbContext context) : IUserRepository
 {
-    public async Task<User?> GetByIdAsync(Guid id)
-        => await context.Users.SingleOrDefaultAsync(x => x.Id == id);
+    public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        => await context.Users.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
     
-    public async Task<User?> GetByEmailAsync(string email)
-        => await context.Users.SingleOrDefaultAsync(x => x.Email == email);
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
+        => await context.Users.SingleOrDefaultAsync(x => x.Email == email, cancellationToken);
 
-    public async Task AddAsync(User user)
+    public async Task AddAsync(User user, CancellationToken cancellationToken)
     {
-        await context.Users.AddAsync(user);
-        await context.SaveChangesAsync();
+        await context.Users.AddAsync(user, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

@@ -4,7 +4,7 @@ namespace ModularShop.Modules.Orders.Domain.Repositories;
 
 public interface IOrderRepository
 {
-    Task<Order?> GetAsync(Guid id);
-    Task AddAsync(Order order);
-    Task UpdateAsync(Order order);
+    Task<Order?> GetAsync(Guid id, CancellationToken cancellationToken);
+    Task AddAsync(Order order, CancellationToken cancellationToken);
+    Task UpdateAsync(Order order, CancellationToken cancellationToken);
 }

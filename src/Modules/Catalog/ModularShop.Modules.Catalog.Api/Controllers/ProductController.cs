@@ -12,9 +12,9 @@ namespace ModularShop.Modules.Catalog.Api.Controllers;
 public class ProductsController(IProductService productService) : ControllerBase
 {
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> Get(Guid id)
+    public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
     {
-        var product = await productService.GetAsync(id);
+        var product = await productService.GetAsync(id, cancellationToken);
         if (product is null)
         {
             return NotFound();
@@ -24,32 +24,32 @@ public class ProductsController(IProductService productService) : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> BrowseAsync() 
-        => Ok(await productService.BrowseAsync());
+    public async Task<IActionResult> BrowseAsync(CancellationToken cancellationToken) 
+        => Ok(await productService.BrowseAsync(cancellationToken));
 
     [HttpPost]
     [Authorize(Policy = Policies.Catalog.Write)]
-    public async Task<IActionResult> CreateAsync([FromBody] CreateProductDto dto)
+    public async Task<IActionResult> CreateAsync([FromBody] CreateProductDto dto, CancellationToken cancellationToken)
     {
-        var id = await productService.CreateAsync(dto);
+        var id = await productService.CreateAsync(dto, cancellationToken);
         
         return CreatedAtAction(nameof(Get), new { Id = id }, dto);
     }
     
     [HttpPut("{id:guid}")]
     [Authorize(Policy = Policies.Catalog.Write)]
-    public async Task<IActionResult> UpdateAsync(Guid id, UpdateProductDto dto)
+    public async Task<IActionResult> UpdateAsync(Guid id, UpdateProductDto dto, CancellationToken cancellationToken)
     {
-        await productService.UpdateAsync(dto with { Id = id });
+        await productService.UpdateAsync(dto with { Id = id }, cancellationToken);
         
         return NoContent();
     }
 
     [HttpPut("{id:guid}/deactivate")]
     [Authorize(Policy = Policies.Catalog.Write)]
-    public async Task<IActionResult> DeactivateAsync(Guid id)
+    public async Task<IActionResult> DeactivateAsync(Guid id, CancellationToken cancellationToken)
     {
-        await productService.DeactivateAsync(id);
+        await productService.DeactivateAsync(id, cancellationToken);
         
         return NoContent();
     }

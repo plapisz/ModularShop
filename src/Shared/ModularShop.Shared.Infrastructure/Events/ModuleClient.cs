@@ -5,7 +5,7 @@ namespace ModularShop.Shared.Infrastructure.Events;
 internal sealed class ModuleClient(IModuleRegistry moduleRegistry, IModuleSerializer moduleSerializer) 
     : IModuleClient
 {
-    public async Task PublishAsync<TEvent>(TEvent @event) where TEvent : class, IEvent
+    public async Task PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken) where TEvent : class, IEvent
     {
         var key = @event.GetType().Name;
         var registrations = moduleRegistry
@@ -18,7 +18,7 @@ internal sealed class ModuleClient(IModuleRegistry moduleRegistry, IModuleSerial
         {
             var action = registration.Action;
             var receiverMessage = TranslateType(@event, registration.ReceiverType);
-            tasks.Add(action(receiverMessage));
+            tasks.Add(action(receiverMessage, cancellationToken));
         }
 
         await Task.WhenAll(tasks);

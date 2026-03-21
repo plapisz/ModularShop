@@ -48,13 +48,13 @@ internal static class Extensions
 
                 foreach (var handler in handlerTypes)
                 {
-                    registry.AddBroadcastAction(handler.EventType, async @event =>
+                    registry.AddBroadcastAction(handler.EventType, async (@event, cancellationToken) =>
                     {
                         using var scope = sp.CreateScope();
                         var instance = scope.ServiceProvider.GetRequiredService(handler.HandlerInterface);
                         await (Task)handler.HandlerInterface
                             .GetMethod(nameof(IEventHandler<>.HandleAsync))!
-                            .Invoke(instance, [@event])!;
+                            .Invoke(instance, [@event, cancellationToken])!;
                     });
                 }
 

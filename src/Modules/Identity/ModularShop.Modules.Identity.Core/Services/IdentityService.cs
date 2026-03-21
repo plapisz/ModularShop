@@ -11,9 +11,9 @@ internal sealed class IdentityService(IUserRepository userRepository,
     IAuthenticator authenticator)
     : IIdentityService
 {
-    public async Task<AccountDto?> GetAsync(Guid id)
+    public async Task<AccountDto?> GetAsync(Guid id, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByIdAsync(id);
+        var user = await userRepository.GetByIdAsync(id, cancellationToken);
         if (user is null)
         {
             return null;
@@ -28,10 +28,10 @@ internal sealed class IdentityService(IUserRepository userRepository,
         };
     }
 
-    public async Task SignUpAsync(SignUpDto dto)
+    public async Task SignUpAsync(SignUpDto dto, CancellationToken cancellationToken)
     {
         var email = dto.Email.ToLowerInvariant();
-        if (await userRepository.GetByEmailAsync(email) is not null)
+        if (await userRepository.GetByEmailAsync(email, cancellationToken) is not null)
         {
             throw new EmailAlreadyInUseException(email);
         }
@@ -46,12 +46,12 @@ internal sealed class IdentityService(IUserRepository userRepository,
             IsActive = true,
             Claims = dto.Claims,
         };
-        await userRepository.AddAsync(user);
+        await userRepository.AddAsync(user, cancellationToken);
     }
 
-    public async Task<JsonWebTokenDto> SignInAsync(SignInDto dto)
+    public async Task<JsonWebTokenDto> SignInAsync(SignInDto dto, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByEmailAsync(dto.Email);
+        var user = await userRepository.GetByEmailAsync(dto.Email, cancellationToken);
         if (user is null || !passwordManager.Validate(dto.Password, user.Password))
         {
             throw new InvalidCredentialsException();

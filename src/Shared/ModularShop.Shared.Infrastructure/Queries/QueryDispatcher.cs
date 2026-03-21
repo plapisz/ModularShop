@@ -5,7 +5,7 @@ namespace ModularShop.Shared.Infrastructure.Queries;
 
 internal sealed class QueryDispatcher(IServiceProvider serviceProvider) : IQueryDispatcher
 {
-    public async Task<TResult> QueryAsync<TResult>(IQuery<TResult> query)
+    public async Task<TResult> QueryAsync<TResult>(IQuery<TResult> query, CancellationToken cancellationToken)
     {
         using var scope = serviceProvider.CreateScope();
         var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));
@@ -13,6 +13,6 @@ internal sealed class QueryDispatcher(IServiceProvider serviceProvider) : IQuery
 
         return await ((Task<TResult>) handlerType
             .GetMethod(nameof(IQueryHandler<,>.HandleAsync))
-            ?.Invoke(handler, [query])!);
+            ?.Invoke(handler, [query, cancellationToken])!);
     }
 }

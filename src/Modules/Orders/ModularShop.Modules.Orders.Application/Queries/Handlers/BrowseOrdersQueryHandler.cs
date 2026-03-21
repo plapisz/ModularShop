@@ -7,6 +7,6 @@ namespace ModularShop.Modules.Orders.Application.Queries.Handlers;
 public sealed class BrowseOrdersQueryHandler(IOrderReadRepository orderReadRepository) 
     : IQueryHandler<BrowseOrdersQuery, IReadOnlyCollection<OrderDto>>
 {
-    public async Task<IReadOnlyCollection<OrderDto>> HandleAsync(BrowseOrdersQuery query)
-        => await orderReadRepository.BrowseAsync();
+    public async Task<IReadOnlyCollection<OrderDto>> HandleAsync(BrowseOrdersQuery query, CancellationToken cancellationToken)
+        => await orderReadRepository.BrowseAsync(cancellationToken);
 }

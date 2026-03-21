@@ -7,7 +7,7 @@ namespace ModularShop.Modules.Orders.Infrastructure.Persistence.Read.Repositorie
 
 internal sealed class OrderReadRepository(IDbConnectionFactory connectionFactory) : IOrderReadRepository
 {
-    public async Task<OrderDto?> GetByIdAsync(Guid id)
+    public async Task<OrderDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         const string sql = """
                            SELECT
@@ -28,7 +28,10 @@ internal sealed class OrderReadRepository(IDbConnectionFactory connectionFactory
                            """;
 
         using var connection = await connectionFactory.OpenConnectionAsync();
-        await using var multi = await connection.QueryMultipleAsync(sql, new { Id = id });
+        
+        var command = new CommandDefinition(sql, new { Id = id }, cancellationToken: cancellationToken);
+        await using var multi = await connection.QueryMultipleAsync(command);
+        
         var order = await multi.ReadSingleOrDefaultAsync<OrderDto>();
         if (order is null)
         {
@@ -38,7 +41,7 @@ internal sealed class OrderReadRepository(IDbConnectionFactory connectionFactory
         return order with { Items = (await multi.ReadAsync<OrderItemDto>()).ToList() };
     }
 
-    public async Task<IReadOnlyList<OrderDto>> BrowseAsync()
+    public async Task<IReadOnlyList<OrderDto>> BrowseAsync(CancellationToken cancellationToken)
     {
         const string sql = """
                             SELECT
@@ -48,12 +51,14 @@ internal sealed class OrderReadRepository(IDbConnectionFactory connectionFactory
                                 Status
                             FROM orders.Orders
                             """;
-
+        
         using var connection = await connectionFactory.OpenConnectionAsync();
-        return (await connection.QueryAsync<OrderDto>(sql)).ToList();
+        var command = new CommandDefinition(sql, cancellationToken: cancellationToken);
+
+        return (await connection.QueryAsync<OrderDto>(command)).ToList();
     }
 
-    public async Task<IReadOnlyList<OrderDto>> BrowseByCustomerIdAsync(Guid customerId)
+    public async Task<IReadOnlyList<OrderDto>> BrowseByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken)
     {
         const string sql = """
                            SELECT
@@ -66,6 +71,8 @@ internal sealed class OrderReadRepository(IDbConnectionFactory connectionFactory
                            """;
 
         using var connection = await connectionFactory.OpenConnectionAsync();
-        return (await connection.QueryAsync<OrderDto>(sql, new { CustomerId = customerId })).ToList();
+        var command = new CommandDefinition(sql, new { CustomerId = customerId }, cancellationToken: cancellationToken);
+
+        return (await connection.QueryAsync<OrderDto>(command)).ToList();
     }
 }

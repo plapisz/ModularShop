@@ -7,9 +7,9 @@ namespace ModularShop.Modules.Orders.Application.Commands.Handlers;
 public sealed class ConfirmOrderCommandHandler(IOrderRepository orderRepository)
     : ICommandHandler<ConfirmOrderCommand>
 {
-    public async Task HandleAsync(ConfirmOrderCommand command)
+    public async Task HandleAsync(ConfirmOrderCommand command, CancellationToken cancellationToken)
     {
-        var order = await orderRepository.GetAsync(command.OrderId);
+        var order = await orderRepository.GetAsync(command.OrderId, cancellationToken);
         if (order is null)
         {
             throw new OrderNotFoundException(command.OrderId);
@@ -17,6 +17,6 @@ public sealed class ConfirmOrderCommandHandler(IOrderRepository orderRepository)
         
         order.Confirm();
         
-        await orderRepository.UpdateAsync(order);
+        await orderRepository.UpdateAsync(order, cancellationToken);
     }
 }

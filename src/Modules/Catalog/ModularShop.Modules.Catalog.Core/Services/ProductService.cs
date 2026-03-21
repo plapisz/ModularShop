@@ -9,7 +9,7 @@ namespace ModularShop.Modules.Catalog.Core.Services;
 
 internal sealed class ProductService(IProductRepository repository, IEventPublisher eventPublisher) : IProductService
 {
-    public async Task<Guid> CreateAsync(CreateProductDto dto)
+    public async Task<Guid> CreateAsync(CreateProductDto dto, CancellationToken cancellationToken)
     {
         var product = new Product
         {
@@ -22,24 +22,24 @@ internal sealed class ProductService(IProductRepository repository, IEventPublis
             IsActive = true,
         };
 
-        await repository.AddAsync(product);
-        await eventPublisher.PublishAsync(new ProductCreatedEvent(product.Id, product.Name, product.Price));
+        await repository.AddAsync(product, cancellationToken);
+        await eventPublisher.PublishAsync(new ProductCreatedEvent(product.Id, product.Name, product.Price), cancellationToken);
         
         return product.Id;
     }
 
-    public async Task<ProductDto?> GetAsync(Guid id)
+    public async Task<ProductDto?> GetAsync(Guid id, CancellationToken cancellationToken)
     {
-        var product = await repository.GetAsync(id);
+        var product = await repository.GetAsync(id, cancellationToken);
         
         return product is null || !product.IsActive 
             ? null 
             : MapToDto(product);
     }
 
-    public async Task<IReadOnlyCollection<ProductDto>> BrowseAsync()
+    public async Task<IReadOnlyCollection<ProductDto>> BrowseAsync(CancellationToken cancellationToken)
     {
-        var products = await repository.BrowseAsync();
+        var products = await repository.BrowseAsync(cancellationToken);
 
         return products
             .Where(x => x.IsActive)
@@ -47,9 +47,9 @@ internal sealed class ProductService(IProductRepository repository, IEventPublis
             .ToList();
     }
 
-    public async Task UpdateAsync(UpdateProductDto dto)
+    public async Task UpdateAsync(UpdateProductDto dto, CancellationToken cancellationToken)
     {
-        var product = await repository.GetAsync(dto.Id);
+        var product = await repository.GetAsync(dto.Id, cancellationToken);
         if (product is null)
         {
             throw new ProductNotFoundException(dto.Id);
@@ -61,13 +61,13 @@ internal sealed class ProductService(IProductRepository repository, IEventPublis
         product.Sku = dto.Sku;
         product.StockQuantity = dto.StockQuantity;
 
-        await repository.UpdateAsync(product);
-        await eventPublisher.PublishAsync(new ProductUpdatedEvent(product.Id, product.Name, product.Price));
+        await repository.UpdateAsync(product, cancellationToken);
+        await eventPublisher.PublishAsync(new ProductUpdatedEvent(product.Id, product.Name, product.Price), cancellationToken);
     }
 
-    public async Task DeactivateAsync(Guid id)
+    public async Task DeactivateAsync(Guid id, CancellationToken cancellationToken)
     {
-        var product = await repository.GetAsync(id);
+        var product = await repository.GetAsync(id, cancellationToken);
         if (product is null)
         {
             throw new ProductNotFoundException(id);
@@ -75,8 +75,8 @@ internal sealed class ProductService(IProductRepository repository, IEventPublis
 
         product.IsActive = false;
 
-        await repository.UpdateAsync(product);
-        await eventPublisher.PublishAsync(new ProductDeactivatedEvent(product.Id));
+        await repository.UpdateAsync(product, cancellationToken);
+        await eventPublisher.PublishAsync(new ProductDeactivatedEvent(product.Id), cancellationToken);
     }
     
     private static ProductDto MapToDto(Product product)

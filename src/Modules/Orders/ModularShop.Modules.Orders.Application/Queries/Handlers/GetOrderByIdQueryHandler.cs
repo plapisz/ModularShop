@@ -7,6 +7,6 @@ namespace ModularShop.Modules.Orders.Application.Queries.Handlers;
 public sealed class GetOrderByIdQueryHandler(IOrderReadRepository orderReadRepository) 
     : IQueryHandler<GetOrderByIdQuery, OrderDto?>
 {
-    public async Task<OrderDto?> HandleAsync(GetOrderByIdQuery query)
-        => await orderReadRepository.GetByIdAsync(query.Id);
+    public async Task<OrderDto?> HandleAsync(GetOrderByIdQuery query, CancellationToken cancellationToken)
+        => await orderReadRepository.GetByIdAsync(query.Id, cancellationToken);
 }

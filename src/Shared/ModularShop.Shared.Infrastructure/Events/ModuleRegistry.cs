@@ -7,7 +7,7 @@ internal sealed class ModuleRegistry : IModuleRegistry
     public IReadOnlyCollection<ModuleBroadcastRegistration> GetBroadcastRegistrations(string key)
         => _broadcastRegistrations.Where(x => x.Key == key).ToList();
 
-    public void AddBroadcastAction(Type requestType, Func<object, Task> action)
+    public void AddBroadcastAction(Type requestType, Func<object, CancellationToken, Task> action)
     {
         var registration = new ModuleBroadcastRegistration(requestType, action);
         _broadcastRegistrations.Add(registration);

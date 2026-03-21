@@ -12,17 +12,17 @@ public class AccountsController(IIdentityService identityService, IContext conte
 {
     [Authorize]
     [HttpGet("me")]
-    public async Task<IActionResult> GetAsync() 
-        => Ok(await identityService.GetAsync(context.Identity.Id));
+    public async Task<IActionResult> GetAsync(CancellationToken cancellationToken) 
+        => Ok(await identityService.GetAsync(context.Identity.Id, cancellationToken));
 
     [HttpPost("sign-up")]
-    public async Task<IActionResult> SignUpAsync(SignUpDto dto)
+    public async Task<IActionResult> SignUpAsync(SignUpDto dto, CancellationToken cancellationToken)
     {
-        await identityService.SignUpAsync(dto);
+        await identityService.SignUpAsync(dto, cancellationToken);
         return NoContent();
     }
 
     [HttpPost("sign-in")]
-    public async Task<IActionResult> SignInAsync(SignInDto dto)
-        => Ok(await identityService.SignInAsync(dto));
+    public async Task<IActionResult> SignInAsync(SignInDto dto, CancellationToken cancellationToken)
+        => Ok(await identityService.SignInAsync(dto, cancellationToken));
 }
