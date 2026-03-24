@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ModularShop.Modules.Catalog.Api.Validators;
 using ModularShop.Modules.Catalog.Core;
 using ModularShop.Modules.Catalog.Core.Options;
 using ModularShop.Shared.Abstractions;
@@ -16,6 +17,8 @@ internal sealed class CatalogModule : IModule
     public void Register(IServiceCollection services, IConfiguration configuration)
     {
         services.RegisterOptions<CatalogOptions>("catalog");
-        services.AddCore(configuration);
+        services
+            .AddCore(configuration)
+            .AddValidators();
     }
 }

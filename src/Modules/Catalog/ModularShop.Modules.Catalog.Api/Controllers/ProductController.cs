@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModularShop.Modules.Catalog.Api.Security;
@@ -9,7 +10,9 @@ namespace ModularShop.Modules.Catalog.Api.Controllers;
 [Authorize(Policy = Policies.Catalog.Read)]
 [ApiController]
 [Route("api/catalog/[controller]")]
-public class ProductsController(IProductService productService) : ControllerBase
+public class ProductsController(IProductService productService, 
+    IValidator<CreateProductDto> createProductValidator,
+    IValidator<UpdateProductDto> updateProductValidator) : ControllerBase
 {
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
@@ -31,6 +34,12 @@ public class ProductsController(IProductService productService) : ControllerBase
     [Authorize(Policy = Policies.Catalog.Write)]
     public async Task<IActionResult> CreateAsync([FromBody] CreateProductDto dto, CancellationToken cancellationToken)
     {
+        var validation = await createProductValidator.ValidateAsync(dto, cancellationToken);
+        if (!validation.IsValid)
+        {
+            return ValidationProblem(new ValidationProblemDetails(validation.ToDictionary()));
+        }
+
         var id = await productService.CreateAsync(dto, cancellationToken);
         
         return CreatedAtAction(nameof(Get), new { Id = id }, dto);
@@ -40,7 +49,15 @@ public class ProductsController(IProductService productService) : ControllerBase
     [Authorize(Policy = Policies.Catalog.Write)]
     public async Task<IActionResult> UpdateAsync(Guid id, UpdateProductDto dto, CancellationToken cancellationToken)
     {
-        await productService.UpdateAsync(dto with { Id = id }, cancellationToken);
+        dto = dto with { Id = id };
+        
+        var validation = await updateProductValidator.ValidateAsync(dto, cancellationToken);
+        if (!validation.IsValid)
+        {
+            return ValidationProblem(new ValidationProblemDetails(validation.ToDictionary()));
+        }
+        
+        await productService.UpdateAsync(dto, cancellationToken);
         
         return NoContent();
     }
