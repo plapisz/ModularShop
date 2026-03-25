@@ -23,4 +23,10 @@ internal sealed class ProductRepository(CatalogDbContext context) : IProductRepo
         context.Products.Update(product);
         await context.SaveChangesAsync(cancellationToken);
     }
+    
+    public Task<bool> ExistsBySkuAsync(string sku, CancellationToken cancellationToken)
+        => context.Products.AnyAsync(x => x.Sku == sku, cancellationToken);
+
+    public Task<bool> ExistsBySkuAsync(string sku, Guid excludeId, CancellationToken cancellationToken)
+        => context.Products.AnyAsync(x => x.Sku == sku && x.Id != excludeId, cancellationToken);
 }

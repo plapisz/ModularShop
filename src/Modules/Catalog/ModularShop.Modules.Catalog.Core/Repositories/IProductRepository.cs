@@ -8,4 +8,6 @@ public interface IProductRepository
     Task<IReadOnlyCollection<Product>> BrowseAsync(CancellationToken cancellationToken);
     Task AddAsync(Product product, CancellationToken cancellationToken);
     Task UpdateAsync(Product product, CancellationToken cancellationToken);
+    Task<bool> ExistsBySkuAsync(string sku, CancellationToken cancellationToken);
+    Task<bool> ExistsBySkuAsync(string sku, Guid excludeId, CancellationToken cancellationToken);
 }

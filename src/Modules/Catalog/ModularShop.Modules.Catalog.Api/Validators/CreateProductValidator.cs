@@ -1,11 +1,12 @@
 using FluentValidation;
 using ModularShop.Modules.Catalog.Core.Dtos;
+using ModularShop.Modules.Catalog.Core.Repositories;
 
 namespace ModularShop.Modules.Catalog.Api.Validators;
 
 internal sealed class CreateProductValidator : AbstractValidator<CreateProductDto>
 {
-    public CreateProductValidator()
+    public CreateProductValidator(IProductRepository productRepository)
     {
         RuleFor(x => x.Name)
             .NotEmpty()
@@ -21,7 +22,10 @@ internal sealed class CreateProductValidator : AbstractValidator<CreateProductDt
 
         RuleFor(x => x.Sku)
             .NotEmpty()
-            .MaximumLength(100);
+            .MaximumLength(100)
+            .MustAsync(async (sku, cancellationToken) => !
+                await productRepository.ExistsBySkuAsync(sku, cancellationToken))
+            .WithMessage("Product with SKU '{PropertyValue}' already exists.");
 
         RuleFor(x => x.StockQuantity)
             .GreaterThanOrEqualTo(0);
