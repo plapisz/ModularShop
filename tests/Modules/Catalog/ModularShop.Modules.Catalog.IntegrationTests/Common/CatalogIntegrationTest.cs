@@ -1,4 +1,8 @@
+using Microsoft.Extensions.DependencyInjection;
 using ModularShop.Modules.Catalog.Api.Security;
+using ModularShop.Modules.Catalog.Core.Entities;
+using ModularShop.Modules.Catalog.Core.Infrastructure.Persistence;
+using ModularShop.Modules.Catalog.IntegrationTests.Fixtures;
 
 namespace ModularShop.Modules.Catalog.IntegrationTests.Common;
 
@@ -14,4 +18,14 @@ public abstract class CatalogIntegrationTest(CatalogWebApplicationFactory factor
     
     public Task DisposeAsync() 
         => Task.CompletedTask;
+
+    protected async Task<Product> SeedProductAsync()
+    {
+        using var scope = factory.Services.CreateScope();
+    
+        var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+        var seeder = new CatalogDataSeeder(dbContext);
+    
+        return await seeder.SeedProductAsync();
+    }
 }
