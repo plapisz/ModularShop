@@ -32,6 +32,11 @@ public static class ProductFixture
     public static Product ValidProduct()
         => ProductFaker.Generate();
     
+    public static Product InactiveProduct()
+        => ProductFaker.Clone()
+            .RuleFor(x => x.IsActive, _ => false)
+            .Generate();
+    
     public static CreateProductDto ValidCreateProductDto()
         => CreateProductDtoFaker.Generate();
     

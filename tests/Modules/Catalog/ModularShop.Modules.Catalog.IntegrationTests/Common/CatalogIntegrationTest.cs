@@ -13,19 +13,23 @@ public abstract class CatalogIntegrationTest(CatalogWebApplicationFactory factor
     protected HttpClient ReadClient => factory.CreateClientWithPolicies(Policies.Catalog.Read);
     protected HttpClient AnonymousClient { get; } = factory.CreateClientWithoutAuthentication();
 
-    public Task InitializeAsync() 
+    public Task InitializeAsync()
         => factory.CleanDatabaseAsync();
-    
-    public Task DisposeAsync() 
+
+    public Task DisposeAsync()
         => Task.CompletedTask;
 
-    protected async Task<Product> SeedProductAsync()
+    protected Task<Product> SeedProductAsync()
+        => CreateSeeder().SeedProductAsync();
+
+    protected Task<Product> SeedInactiveProductAsync()
+        => CreateSeeder().SeedInactiveProductAsync();
+
+    private CatalogDataSeeder CreateSeeder()
     {
-        using var scope = factory.Services.CreateScope();
-    
-        var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-        var seeder = new CatalogDataSeeder(dbContext);
-    
-        return await seeder.SeedProductAsync();
+        var scope = factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+        
+        return new CatalogDataSeeder(db);
     }
 }
