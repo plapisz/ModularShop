@@ -1,3 +1,4 @@
+using System.Globalization;
 using ModularShop.Modules.Orders.Domain.Exceptions;
 
 namespace ModularShop.Modules.Orders.Domain.ValueObjects;
@@ -53,5 +54,5 @@ public sealed record Money
     }
 
     public override string ToString()
-        => $"{Amount:0.00} {Currency}";
+        => $"{Amount.ToString("0.00", CultureInfo.InvariantCulture)} {Currency}";
 }
