@@ -23,9 +23,7 @@
     <ItemGroup>
       <Folder Include="Application\Commands\Handlers\" />
       <Folder Include="Application\Events\External\Handlers\" />
-      <Folder Include="Common\Builders\" />
       <Folder Include="Domain\Aggregates\" />
-      <Folder Include="Domain\Entities\" />
     </ItemGroup>
 
     <ItemGroup>
