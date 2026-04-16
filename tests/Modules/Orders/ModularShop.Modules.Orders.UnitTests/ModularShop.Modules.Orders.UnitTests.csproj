@@ -23,7 +23,6 @@
     <ItemGroup>
       <Folder Include="Application\Commands\Handlers\" />
       <Folder Include="Application\Events\External\Handlers\" />
-      <Folder Include="Domain\Aggregates\" />
     </ItemGroup>
 
     <ItemGroup>
