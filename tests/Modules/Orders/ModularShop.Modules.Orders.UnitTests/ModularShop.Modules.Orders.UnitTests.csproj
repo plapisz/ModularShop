@@ -21,7 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Application\Commands\Handlers\" />
       <Folder Include="Application\Events\External\Handlers\" />
     </ItemGroup>
 
