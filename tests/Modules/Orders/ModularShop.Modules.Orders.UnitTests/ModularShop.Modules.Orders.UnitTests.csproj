@@ -21,10 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Application\Events\External\Handlers\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\..\..\src\Modules\Orders\ModularShop.Modules.Orders.Application\ModularShop.Modules.Orders.Application.csproj" />
     </ItemGroup>
 
